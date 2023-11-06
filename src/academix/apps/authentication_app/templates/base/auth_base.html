@@ -1,0 +1,27 @@
+{% load static %}
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ========== Bootstrap ========== -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}">
+
+    <!-- ========== Custom ========== -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth_css.css' %}">
+
+    <link rel="icon" href="{% static 'image/ico/logo_none_text.ico' %}" type="image/x-icon">
+
+    <title>{% block title %}UNKNOW - Academix{% endblock title %}</title>
+</head>
+<body>
+    {% block content %} ale {% endblock content %}
+    
+    <!-- ========== Bootstrap & JQuery|Ajax | Slick ========== -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    {% block scripts %}{% endblock scripts %}
+</body>

@@ -17,6 +17,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.authentication_app.apps.AuthenticationAppConfig', 
+    'apps.student_apps.student_main_app.apps.StudentMainAppConfig',
+    'apps.teacher_apps.teacher_main_app.apps.TeacherMainAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -34,7 +37,7 @@ ROOT_URLCONF = 'academix.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join('', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -51,8 +54,12 @@ WSGI_APPLICATION = 'academix.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'academix-db',
+        'USER': 'academix',
+        'PASSWORD': 'academix',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -71,14 +78,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'ru-ru'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
-
 USE_TZ = True
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'shared_static',
+]
+
 STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
