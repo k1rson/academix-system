@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.authentication_app.apps.AuthenticationAppConfig', 
     'apps.student_apps.student_main_app.apps.StudentMainAppConfig',
-    'apps.teacher_apps.teacher_main_app.apps.TeacherMainAppConfig'
+    'apps.teacher_apps.teacher_main_app.apps.TeacherMainAppConfig',
+    'apps.main_app.apps.MainAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'main_app.CustomUser'
 
 LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'Europe/Moscow'
