@@ -18,9 +18,24 @@
 </head>
 <body>
     {% block content %} ale {% endblock content %}
-    
+
+    <!-- ========== Toast Bootstrap Default ========== -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1060">
+        <div id="live-toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <img src="" class="rounded me-2" id="toast-icon" width="25">
+            <strong class="me-auto" id="toast-type">Type</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="toast-content">
+            Text
+          </div>
+        </div>
+    </div>
+
     <!-- ========== Bootstrap & JQuery|Ajax | Slick ========== -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/support-fucntions.js' %}"></script>
     {% block scripts %}{% endblock scripts %}
 </body>

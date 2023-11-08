@@ -82,6 +82,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'Europe/Moscow'
 
+LOGIN_REDIRECT_URL = 'home'
+
 USE_I18N = True
 USE_TZ = True
 
