@@ -9,11 +9,10 @@ from django.views import View
 from constants.error_messages import *
 from constants.error_codes import *
 
-from .decorators import student_required, teacher_required
-
 from .service.service import (
     check_user_exists, 
-    check_user_password
+    check_user_password,
+    login_user_in_system
 )
 
 class HomeView(View):
@@ -50,14 +49,11 @@ def check_password(request) -> JsonResponse:
     
     return JsonResponse({'status': 'success'})
 
-@student_required
-def authenticate_user(request):
+def authenticate_user(request) -> JsonResponse:
     username = request.POST.get('username')
-    password = request.POST.get('password')
-
-    print(username, password)
 
     user = check_user_exists('username', username)
+    login(request, user)
 
-    print(user)
-    print(login(request, user))
+    href = login_user_in_system(user)
+    return JsonResponse({'status': 'success', 'href': href})

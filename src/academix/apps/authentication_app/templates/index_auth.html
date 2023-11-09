@@ -32,8 +32,10 @@
                         <div class="form-outline mb-4 small">
                           <label class="form-label d-flex align-items-center">
                             Ваш пароль
-                            <img src="{% static 'image/svg/icon-error.svg' %}" width="18px" class="ml-2 mx-1 d-none" id="icon-password-error"
-                                >
+                            <img src="{% static 'image/svg/icon-error.svg' %}" width="18px" class="ml-2 mx-1 d-none" id="icon-password-error">
+                            <i id="toggle-password" onclick="show_password()">
+                              <img src="{% static 'image/svg/icon-password-eye.svg' %}" width="25px" class="ml-2 mx-1" >
+                            </i>
                           </label>
                           <input type="password" id="password-input" class="form-control" placeholder="Введите Ваш пароль"/>
                         </div>

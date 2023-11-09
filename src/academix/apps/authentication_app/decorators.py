@@ -4,8 +4,6 @@ from django.http import HttpResponseForbidden
 def student_required(view_func):
     @login_required
     def _wrapped_view(request, *args, **kwargs):
-        print(request.user)
-
         if request.user.groups.filter(name='Students').exists():
             return view_func(request, *args, **kwargs)
         else:

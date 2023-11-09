@@ -32,3 +32,17 @@ def check_user_password(user: User, password: str) -> bool:
     :return: Тип boolean=True, если пароль корректный, иначе boolean=False
     """
     return user.check_password(password)
+
+def login_user_in_system(user: User) -> str: 
+    """
+    Авторизовывает пользователя в системе
+
+    :param user: Объект типа User
+    :return: Тип string, возвращает строку с URL, указывающий на рабочее пространство пользователя (student_workspace or teacher_workspace)
+    """
+    if user.groups.filter(name='Student').exists():
+        return '/std_workspace/'
+    elif user.groups.filter(name='Teacher').exists(): 
+        return '/tch_workspace/'
+    
+    return '/adm_workspace/'

@@ -6,22 +6,29 @@ const login_button = document.getElementById('login-button');
 const icon_login_error = document.getElementById('icon-login-error');
 const icon_password_error = document.getElementById('icon-password-error');
 
+let first_flag_for_button = false;
+let second_flag_for_button = false;
+
 // EVENT INPUT
 username_input.addEventListener('input', () => {
-    check_login(username_input.value, function(is_login_valid) {
-        update_button_state(is_login_valid);
+    check_login(username_input.value, function() {
+        update_button_state();
     });
 });
 
 password_input.addEventListener('input', () => {
-    check_password(username_input.value, password_input.value, function(is_password_valid) {
-        update_button_state(is_password_valid);
+    check_password(username_input.value, password_input.value, function() {
+        update_button_state();
     });
 });
 
 // FUNCTIONS
-function update_button_state(isButtonEnabled) {
-    login_button.disabled = !isButtonEnabled;
+function update_button_state() {
+    if(first_flag_for_button && second_flag_for_button){
+        login_button.disabled = !login_button.disabled;
+        return
+    }
+    login_button.disabled = true;
 }
 
 function check_login(username, callback) {
@@ -37,11 +44,13 @@ function check_login(username, callback) {
         },
         success: function(response) {
             if (response.status === 'success') {
-                callback(true);
+                first_flag_for_button = true;
+                callback();
 
                 icon_login_error.classList.add('d-none');
             }else{
-                callback(false);
+                first_flag_for_button = false;
+                callback();
 
                 icon_login_error.classList.remove('d-none');
             }
@@ -66,11 +75,14 @@ function check_password(username, password, callback) {
         },
         success: function(response) {
             if (response.status === 'success') {
-                callback(true);
+                second_flag_for_button = true
+                callback();
 
                 icon_password_error.classList.add('d-none');
             }else{
-                callback(false);
+                second_flag_for_button = false
+                callback();
+
                 icon_password_error.classList.remove('d-none');
             }
         },
@@ -93,10 +105,17 @@ function authenticate_user(){
             }
         },
         success: function(response) {
-            console.log('good')
+            window.location.href = response.href;
         },
         error: function(status) {
-            callToast('Ошибка в работе сервера. Подробная информация: ' + status);
+            callToast('Ошибка', 3, 'Ошибка работы сервера, попробуйте позже');
         }
     });
+}
+
+function show_password(){
+    const toggle_password = document.querySelector('#toggle-password')
+
+    const type = password_input.getAttribute('type') === 'password' ? 'text' : 'password';
+    password_input.setAttribute('type', type);
 }
