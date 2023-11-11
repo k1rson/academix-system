@@ -1,13 +1,14 @@
-from django.contrib.auth.models import AbstractBaseUser, User
+from django.contrib.auth.models import AbstractUser,  BaseUserManager
 from django.db import models
 
-class CustomUser(AbstractBaseUser):
-    otp_code = models.CharField(max_length=6, null=True, blank=True, verbose_name='Одноразовый пароль')
+class CustomUser(AbstractUser):
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name='Аватар пользователя')
+    last_otp_code = models.IntegerField(verbose_name='Последний OTP-код пользователя', null=True)
 
     def __str__(self):
-        return self.username
-
-    class Meta:
+        return f'{self.username}'
+    
+    class Meta: 
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
@@ -23,7 +24,7 @@ class DisciplineModel(models.Model):
         verbose_name_plural = 'Дисциплины'
 
 class TeacherModel(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher_profile')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
     middle_name = models.CharField(max_length=255, verbose_name='Отчество')
@@ -63,7 +64,7 @@ class TeacherAssignmentsModel(models.Model):
         verbose_name_plural = 'Назначение преподавателей'
 
 class StudentModel(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
     middle_name = models.CharField(max_length=255, verbose_name='Отчество')

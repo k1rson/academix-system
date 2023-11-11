@@ -28,6 +28,9 @@ class ResetPasswordView(View):
 # ajax responses
 def check_login(request) -> JsonResponse:
     username = request.POST.get('username')
+
+    print(username)
+
     user = check_user_exists('username', username)
 
     if user is None:
@@ -84,18 +87,35 @@ def send_otp_code(request):
 
     user = check_user_exists('username', username)
 
-    opt_send_status = send_otp_code_mail(user.email)
+    opt_send_status, otp_code = send_otp_code_mail(user.email)
     if not opt_send_status:
         return JsonResponse({'status': 'error', 
                              'message': ERROR_USER_ERROR_SEND_OTP,
                              'error_code': ERROR_USER_ERROR_SEND_OTP_CODE})
+                             
+    user.last_otp_code = otp_code
+    user.save()
     
     return JsonResponse({'status': 'success'})
 
 def check_otp_code(request): 
+    username = request.POST.get('username')
+    otp_code = int(request.POST.get('otp_code'))
+ 
+    user = check_user_exists('username', username)
+    expacted_otp_code = user.last_otp_code
+
+    if otp_code != expacted_otp_code: 
+       return JsonResponse({'status': 'error', 
+                             'message': ERROR_USER_ERROR_CHECK_OTP,
+                             'error_code': ERROR_USER_ERROR_CHECK_OTP_CODE})
+    
     return JsonResponse({'status': 'success'})
 
 def authenticate_user(request) -> JsonResponse:
+    username = request.POST.get('username')
+
+    user = check_user_exists('username', username)
     login(request, user)
 
     href = login_user_in_system(user)

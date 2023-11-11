@@ -1,52 +1,53 @@
 import secrets
 import string
 
-from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+
+from ...main_app.models import CustomUser
 
 from ...mail_client_app.smtp_utils.smtp_client import SMTPServer
 from ...mail_client_app.service.template_generator import TemplateGenerator
 
-def check_user_exists(attribute: str, value: str) -> User:
+def check_user_exists(attribute: str, value: str) -> CustomUser:
     """
     Проверяет существование пользователя по указанному атрибуту.
 
     :param attribute: Атрибут для поиска пользователя ('username', 'email' или 'id').
     :param value: Значение атрибута.
-    :return: Объект User, если пользователь существует, иначе None.
+    :return: Объект CustomUser, если пользователь существует, иначе None.
     """
 
     try: 
         if attribute == 'username':
-            user = User.objects.get(username=value)
+            user = CustomUser.objects.get(username=value)
         elif attribute == 'email':
-            user = User.objects.get(email=value)
+            user = CustomUser.objects.get(email=value)
         elif attribute == 'id':
-            user = User.objects.get(id=value)
+            user = CustomUser.objects.get(id=value)
         else:
             user = None
 
         return user
-    except User.DoesNotExist: 
+    except CustomUser.DoesNotExist: 
         return None
-    except User.MultipleObjectsReturned:
+    except CustomUser.MultipleObjectsReturned:
         return None
     
-def check_user_password(user: User, password: str) -> bool: 
+def check_user_password(user: CustomUser, password: str) -> bool: 
     """
     Проверяет корректность пароля от учетной записи пользователя
 
-    :param user: Объект типа User
+    :param user: Объект типа CustomUser
     :param password: Строка с паролем от учетной записи.
     :return: Тип boolean=True, если пароль корректный, иначе boolean=False
     """
     return user.check_password(password)
 
-def login_user_in_system(user: User) -> str: 
+def login_user_in_system(user: CustomUser) -> str: 
     """
     Авторизовывает пользователя в системе
 
-    :param user: Объект типа User
+    :param user: Объект типа CustomUser
     :return: Тип string, возвращает строку с URL, указывающий на рабочее пространство пользователя (student_workspace or teacher_workspace)
     """
     if user.groups.filter(name='Student').exists():
@@ -56,11 +57,11 @@ def login_user_in_system(user: User) -> str:
     
     return '/adm_workspace/'
 
-def reset_password(user: User) -> bool:
+def reset_password(user: CustomUser) -> bool:
     """
     Сбрасывает пароль от учетной записи пользователя
 
-    :param user: Объект типа User
+    :param user: Объект типа CustomUser
     :param email: Строка с электронной почтой пользователя
     :return: Тип bool, возвращает bool, характеризующее статус c6poca пароля
     """
@@ -129,7 +130,7 @@ def send_otp_code_mail(email: str) -> bool:
     if not send_status: 
         return False
     
-    return True
+    return True, opt_code
 
 def generate_random_password(length: int):
     """

@@ -88,6 +88,8 @@ LOGIN_REDIRECT_URL = 'home'
 USE_I18N = True
 USE_TZ = True
 
+AUTH_USER_MODEL = 'main_app.CustomUser'
+
 # STATIC FILES CONFIGURATION
 STATICFILES_DIRS = [
     BASE_DIR / 'shared_static',

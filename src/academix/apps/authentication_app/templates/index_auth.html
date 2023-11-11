@@ -21,14 +21,14 @@
                         <img src="{% static 'image/svg/logo.svg' %}" style="width: 185px;">
                       </div>
       
-                      <div id="auth-block" class="">
+                      <div id="auth-block">
                         <div class="form-outline mb-4 mt-4 small">
                           <label class="form-label d-flex align-items-center">
                               Ваш логин
                               <img src="{% static 'image/svg/icon-error.svg' %}" width="18px" class="ml-2 mx-1 d-none" id="icon-login-error"
                               data-bs-toggle="tooltip" data-bs-placement="top" title="Указанной учетной записи не существует">
                           </label>
-                              <input type="email" id="username-input" class="form-control" placeholder="Введите Ваш логин" />
+                              <input type="login" id="username-input" class="form-control" placeholder="Введите Ваш логин" />
                         </div>
                         
                           <div class="form-outline mb-4 small">
@@ -59,14 +59,14 @@
                             <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10 text-center">
                               <div class="mb-3">
                                 <div class="d-flex justify-content-between">
-                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" oninput="handle_input_otp(this)" required>
-                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" oninput="handle_input_otp(this)" required>
-                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" oninput="handle_input_otp(this)" required>
-                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" oninput="handle_input_otp(this)" required>
+                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" id="otp-input-1" oninput="handle_input_otp(this)" required>
+                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" id="otp-input-2" oninput="handle_input_otp(this)" required>
+                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" id="otp-input-3" oninput="handle_input_otp(this)" required>
+                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" id="otp-input-4" oninput="handle_input_otp(this)" required>
                                 </div>
                                 <div class="form-text text-center">Введите 4-значный одноразовый пароль.</div>
                               </div>
-                              <button type="submit" class="btn btn-outline-primary btn-block">Подтвердить</button>
+                              <button type="submit" class="btn btn-outline-primary btn-block" onclick="check_otp_code()">Подтвердить</button>
                             </div>
                           </div>
                         </div>

@@ -130,10 +130,44 @@ function send_opt_code(){
     });
 }
 
-function check_login(username, callback) {
+function check_otp_code(callback) {
+    let username = username_input.value
+
+    let otp_code = '';
+    for (let i = 1; i <= 4; i++) {
+        let inpit_id = '#otp-input-' + i;
+
+        otp_code += $(inpit_id).val();
+    }
+
     let crsf_token = getCookie('csrftoken');
     $.ajax({
         url: 'auth_user/check_otp_code',
+        type: 'POST',
+        data: { username: username,
+                otp_code: otp_code },
+        beforeSend: function(xhr, settings){
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain){
+                xhr.setRequestHeader("X-CSRFToken", crsf_token); 
+            }
+        },
+        success: function(response) {
+            if (response.status === 'success') {
+                auth_user(username)
+            }else{
+                callToast('Ошибка', 3, response.message)
+            }
+        },
+        error: function(status) {
+            callToast('Ошибка в работе сервера. Подробная информация: ' + status);
+        }
+    });
+}
+
+function auth_user(username, callback) {
+    let crsf_token = getCookie('csrftoken');
+    $.ajax({
+        url: 'auth_user/',
         type: 'POST',
         data: { username: username },
         beforeSend: function(xhr, settings){
@@ -143,15 +177,9 @@ function check_login(username, callback) {
         },
         success: function(response) {
             if (response.status === 'success') {
-                first_flag_for_button = true;
-                callback();
-
-                icon_login_error.classList.add('d-none');
+                window.location.href = response.href
             }else{
-                first_flag_for_button = false;
-                callback();
-
-                icon_login_error.classList.remove('d-none');
+                
             }
         },
         error: function(status) {
