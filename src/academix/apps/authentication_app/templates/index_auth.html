@@ -21,31 +21,56 @@
                         <img src="{% static 'image/svg/logo.svg' %}" style="width: 185px;">
                       </div>
       
-                      <div class="form-outline mb-4 mt-4 small">
-                        <label class="form-label d-flex align-items-center">
-                            Ваш логин
-                            <img src="{% static 'image/svg/icon-error.svg' %}" width="18px" class="ml-2 mx-1 d-none" id="icon-login-error">
-                        </label>
-                            <input type="email" id="username-input" class="form-control" placeholder="Введите Ваш логин" />
-                      </div>
-                      
-                        <div class="form-outline mb-4 small">
+                      <div id="auth-block" class="">
+                        <div class="form-outline mb-4 mt-4 small">
                           <label class="form-label d-flex align-items-center">
-                            Ваш пароль
-                            <img src="{% static 'image/svg/icon-error.svg' %}" width="18px" class="ml-2 mx-1 d-none" id="icon-password-error">
-                            <i id="toggle-password" onclick="show_password()">
-                              <img src="{% static 'image/svg/icon-password-eye.svg' %}" width="25px" class="ml-2 mx-1" >
-                            </i>
+                              Ваш логин
+                              <img src="{% static 'image/svg/icon-error.svg' %}" width="18px" class="ml-2 mx-1 d-none" id="icon-login-error"
+                              data-bs-toggle="tooltip" data-bs-placement="top" title="Указанной учетной записи не существует">
                           </label>
-                          <input type="password" id="password-input" class="form-control" placeholder="Введите Ваш пароль"/>
+                              <input type="email" id="username-input" class="form-control" placeholder="Введите Ваш логин" />
                         </div>
-
-                        <div class="text-center pt-1 mb-5 pb-1">
-                          <button class="btn btn-primary btn-block fa-lg gradient-custom-2" type="button" id="login-button" onclick="authenticate_user()"> Авторизоваться</button>
-                          <hr>
-                          <a class="text-muted" href="#!">Забыли пароль?</a>
+                        
+                          <div class="form-outline mb-4 small">
+                            <label class="form-label d-flex align-items-center">
+                              Ваш пароль
+                              <img src="{% static 'image/svg/icon-error.svg' %}" width="18px" class="ml-2 mx-1 d-none" id="icon-password-error"
+                              data-bs-toggle="tooltip" data-bs-placement="top" title="Указанный пароль не соответствует указанной учетной записи">
+                              <i id="toggle-password" onclick="show_password()">
+                                <img src="{% static 'image/svg/icon-password-eye.svg' %}" width="25px" class="ml-2 mx-1" 
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Нажмите, чтобы увидеть Ваш пароль" id="icon-email-error">
+                              </i>
+                            </label>
+                            <input type="password" id="password-input" class="form-control" placeholder="Введите Ваш пароль"/>
+                          </div>
+  
+                          <div class="text-center pt-1 mb-5 pb-1">
+                            <button class="btn btn-primary btn-block fa-lg gradient-custom-2" type="button" id="login-button" onclick="send_opt_code()">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                <span id="button-text">Авторизоваться</span>
+                            </button>
+                            <hr>
+                            <a class="text-muted" href="{% url 'reset_password' %}">Забыли пароль?</a>
                         </div>
-      
+                      </div>
+                      <div id="otp-block" class="d-none">
+                        <div class="container mt-4">
+                          <div class="row justify-content-center">
+                            <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10 text-center">
+                              <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" oninput="handle_input_otp(this)" required>
+                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" oninput="handle_input_otp(this)" required>
+                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" oninput="handle_input_otp(this)" required>
+                                  <input type="text" class="form-control otp-input me-2" maxlength="1" pattern="\d" oninput="handle_input_otp(this)" required>
+                                </div>
+                                <div class="form-text text-center">Введите 4-значный одноразовый пароль.</div>
+                              </div>
+                              <button type="submit" class="btn btn-outline-primary btn-block">Подтвердить</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
@@ -77,5 +102,5 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="{% static 'js/auth_js.js' %}"></script>
+<script src="{% static 'js/auth.js' %}"></script>
 {% endblock scripts %}

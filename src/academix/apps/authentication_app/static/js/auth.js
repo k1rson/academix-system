@@ -6,8 +6,14 @@ const login_button = document.getElementById('login-button');
 const icon_login_error = document.getElementById('icon-login-error');
 const icon_password_error = document.getElementById('icon-password-error');
 
+const auth_block_element = document.getElementById('auth-block');
+const otp_block_element = document.getElementById('otp-block');
+
 let first_flag_for_button = false;
 let second_flag_for_button = false;
+
+// DEFAULT
+login_button.disabled = true;
 
 // EVENT INPUT
 username_input.addEventListener('input', () => {
@@ -92,26 +98,83 @@ function check_password(username, password, callback) {
     });
 }
 
-function authenticate_user(){
+function send_opt_code(){
+    let button = $('#login-button')
+    let spinner = button.find(".spinner-border");
+    let button_text = button.find("#button-text");
+
+    button.prop("disabled", true);
+    spinner.show();
+    button_text.text("Отправка кода на почту");
+
     let crsf_token = getCookie('csrftoken');
     $.ajax({
-        url: 'auth_user/',
+        url: 'auth_user/send_opt_code',
         type: 'POST',
-        data: { username: username_input.value, 
-                password: password_input.value },
+        data: { username: username_input.value },
         beforeSend: function(xhr, settings){
             if (!csrfSafeMethod(settings.type) && !this.crossDomain){
                 xhr.setRequestHeader("X-CSRFToken", crsf_token); 
             }
         },
         success: function(response) {
-            window.location.href = response.href;
+            if (response.status === 'success') {
+                animate_and_replace_element(auth_block_element, otp_block_element)
+            }else{
+               callToast('Ошибка', 3, response.message)
+            }
         },
         error: function(status) {
             callToast('Ошибка', 3, 'Ошибка работы сервера, попробуйте позже');
         }
     });
 }
+
+function check_login(username, callback) {
+    let crsf_token = getCookie('csrftoken');
+    $.ajax({
+        url: 'auth_user/check_otp_code',
+        type: 'POST',
+        data: { username: username },
+        beforeSend: function(xhr, settings){
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain){
+                xhr.setRequestHeader("X-CSRFToken", crsf_token); 
+            }
+        },
+        success: function(response) {
+            if (response.status === 'success') {
+                first_flag_for_button = true;
+                callback();
+
+                icon_login_error.classList.add('d-none');
+            }else{
+                first_flag_for_button = false;
+                callback();
+
+                icon_login_error.classList.remove('d-none');
+            }
+        },
+        error: function(status) {
+            callToast('Ошибка в работе сервера. Подробная информация: ' + status);
+        }
+    });
+}
+
+// other functions
+function handle_input_otp(input) {
+    var value = input.value.replace(/\D/g, '');
+  
+    if (value.length > 1) {
+      value = value.charAt(0);
+    }
+  
+    input.value = value;
+  
+    var next_input = input.nextElementSibling;
+    if (next_input !== null && value !== '') {
+      next_input.focus();
+    }
+  }
 
 function show_password(){
     const toggle_password = document.querySelector('#toggle-password')

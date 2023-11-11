@@ -4,7 +4,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
 });
 
-// functions
+// functions for cookie-crsf
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -24,6 +24,7 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+// fucntion for toast
 function callToast(type_toast_text, type_icon_number, message){
     let toast_live_object = document.getElementById('live-toast')
 
@@ -50,4 +51,24 @@ function callToast(type_toast_text, type_icon_number, message){
 
     let toast = new bootstrap.Toast(toast_live_object)
     toast.show()
+}
+
+
+// functions for replacing elements
+function animate_and_replace_element(element, targetElement) {
+    element.classList.add('animated-remove');
+    element.addEventListener('animationend', function () {
+        remove_element(element);
+
+        if (targetElement) {
+            targetElement.classList.remove('d-none');
+            targetElement.classList.add('animated-create');
+        }
+    });
+}
+
+function remove_element(element) {
+    if (element) {
+        element.remove();
+    }
 }

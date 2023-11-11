@@ -8,7 +8,7 @@ SECRET_KEY = 'django-insecure-39itpw@#jnrtyppff5nr=x2j^n!oaagphs#5u#t6=v*veph^g4
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     'apps.authentication_app.apps.AuthenticationAppConfig', 
     'apps.student_apps.student_main_app.apps.StudentMainAppConfig',
     'apps.teacher_apps.teacher_main_app.apps.TeacherMainAppConfig',
-    'apps.main_app.apps.MainAppConfig'
+    'apps.main_app.apps.MainAppConfig',
+    'apps.mail_client_app.apps.MailClientAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -87,13 +88,29 @@ LOGIN_REDIRECT_URL = 'home'
 USE_I18N = True
 USE_TZ = True
 
+# STATIC FILES CONFIGURATION
 STATICFILES_DIRS = [
     BASE_DIR / 'shared_static',
 ]
 
 STATIC_URL = 'static/'
 
+# MEDIA FILES CONFIGURATION
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# LOGS CONFIGURATION
+
+# IMAP CONFIGURATION
+IMAP_SERVER = 'imap.mail.ru'
+IMAP_PORT = 993
+IMAP_USERNAME = 'academix-sup@bk.ru'
+IMAP_PASSWORD = 'B0mBHh4J8aHTSpmqqScn'
+
+# SMTP CONFIGURATION
+SMTP_SERVER = 'smtp.mail.ru'
+SMTP_PORT = 465 
+SMTP_USERNAME = 'academix-sup@bk.ru'
+SMTP_PASSWORD = 'B0mBHh4J8aHTSpmqqScn'
